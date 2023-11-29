@@ -1,5 +1,3 @@
---select * from continents;
---select * from countries;
 BEGIN TRANSACTION;
 drop table continents;
 create table continents
