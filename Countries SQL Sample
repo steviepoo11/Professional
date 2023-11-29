@@ -1,0 +1,81 @@
+--select * from continents;
+--select * from countries;
+BEGIN TRANSACTION;
+drop table continents;
+create table continents
+    (
+        continent_code    varchar(2),
+        continent_name    varchar(20)
+    );
+
+insert into continents values
+    ('AS', 'Asia'),
+    ('AF', 'Africa'),
+    ('NA', 'North America'),
+    ('SA', 'South America'),
+    ('AN', 'Antarctica'),
+    ('EU', 'Europe'),
+    ('AU', 'Australia');
+COMMIT;
+BEGIN TRANSACTION;
+drop table countries;
+create table countries
+    (
+        country_code    varchar(3),
+        country_name    varchar(50),
+        continent_code    varchar(2)
+    );
+insert into countries values
+    ('IN', 'India', 'AS'),
+    ('MY', 'Malaysia', 'AS'),
+    ('LT', 'Lithuania', 'EU'),
+    ('DE', 'Germany', 'EU'),
+    ('ZA', 'South Africa', 'AF'),
+    ('NG', 'Nigeria', 'AF'),
+    ('US', 'United States of America', 'NA'),
+    ('CA', 'Canada', 'NA'),
+    ('BR', 'Brazil', 'SA'),
+    ('AR', 'Argentina', 'SA'),
+    ('GU', 'Guam', 'AU'),
+    ('AQ', 'Antarctica', 'AN');
+COMMIT;
+
+SELECT * FROM continents
+SELECT * FROM countries
+
+--Checking the data type or DESC if applicable
+SELECT COLUMN_NAME, DATA_TYPE
+FROM INFORMATION_SCHEMA.COLUMNS
+WHERE TABLE_NAME = 'continents';
+
+SELECT COLUMN_NAME, DATA_TYPE
+FROM INFORMATION_SCHEMA.COLUMNS
+WHERE TABLE_NAME = 'countries';
+
+ALTER TABLE countries
+ALTER COLUMN country_code VARCHAR(5);
+
+--inner join (takes all columns joins together any columns that match)
+SELECT cr.country_name 'IJ Country Name', ct.continent_name 'IJ Continent Name', cr.continent_code 'IJ Continent_Code'
+from CONTINENTS ct
+INNER JOIN countries cr on ct.continent_code = cr.continent_code
+ORDER BY cr.country_name ASC;
+
+--LEFT JOIN join (takes left columns joins together right columns, only columns that are in the LEFT column (continent) event if the other table doesn't match
+SELECT cr.country_name 'LJ Country Name', cr.country_code 'LJ Country Code',  ct.continent_code 'LJ Continent Code'
+from CONTINENTS ct
+LEFT JOIN countries cr on ct.continent_code = cr.continent_code
+ORDER BY cr.country_name ASC;
+
+--RIGHT JOIN join (takes right columns joins together only columns that match right)
+SELECT cr.country_name 'RJ Country Name', cr.country_code 'RJ Country Code',  ct.continent_code 'RJ Continent Code'
+from CONTINENTS ct
+RIGHT JOIN countries cr on ct.continent_code = cr.continent_code
+ORDER BY cr.country_name ASC;
+
+--FULL JOIN join (takes all columns joins together, columns do not need match)
+SELECT cr.country_name 'FJ Country Name', cr.country_code 'FJ Country Code',  ct.continent_code 'FJ Continent Code'
+from CONTINENTS ct
+FULL JOIN countries cr on ct.continent_code = cr.continent_code
+ORDER BY cr.country_name ASC;
+
